@@ -1,0 +1,66 @@
+.pr-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f6f8;
+}
+
+.pr-card {
+  background: #fff;
+  padding: 30px;
+  width: 360px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.pr-card h2 {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.pr-card p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.pr-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.pr-card button {
+  width: 100%;
+  padding: 10px;
+  background: #1e6f5c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pr-card button:disabled {
+  background: #aaa;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.otp-box {
+  text-align: center;
+}
+
+.note {
+  display: block;
+  margin-top: 15px;
+  font-size: 12px;
+  color: #777;
+  text-align: center;
+}

@@ -1,0 +1,79 @@
+/* ===== Base ===== */
+.login-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #e8f5f2, #d4ece6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 40px;
+  width: 420px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.login-card h2 {
+  margin-bottom: 5px;
+}
+
+.login-card p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.login-card label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-card button {
+  background: #1f6f5c;
+  color: white;
+  padding: 10px;
+  width: 120px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.login-card button:hover {
+  background: #155d4c;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* ===== Tablet ===== */
+@media (max-width: 768px) {
+  .login-card {
+    width: 90%;
+    padding: 30px;
+  }
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 480px) {
+  .login-card {
+    width: 95%;
+    padding: 25px;
+  }
+
+  .login-card button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,77 @@
+.dr-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f4c75, #3282b8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.dr-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.dr-card h2 {
+  text-align: center;
+}
+
+.dr-card p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.dr-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.doctor-box {
+  background: #eef7ff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.doctor-box h4 {
+  margin-bottom: 10px;
+}
+
+.dr-card button {
+  width: 100%;
+  padding: 10px;
+  background: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.note {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #555;
+}
+
+/* 📱 Mobile responsive */
+@media (max-width: 600px) {
+  .dr-card {
+    padding: 20px;
+  }
+}
