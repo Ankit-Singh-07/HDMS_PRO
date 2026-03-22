@@ -1,28 +1,37 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import DoctorDashboard from './pages/DoctorDashboard';
+import Appointments from './pages/Appointments';
+import MyPatients from './pages/MyPatients';
+import Reports from './pages/Reports';
+import DoctorProfile from './pages/DoctorProfile';
+import DoctorLogin from './pages/DoctorLogin';
+import DoctorRegister from './pages/DoctorRegister'; // Import add kiya
 
-import DoctorLogin from "./pages/DoctorLogin";
-import DoctorDashboard from "./pages/DoctorDashboard";
-import DoctorRegister from "./pages/DoctorRegister"; // ✅ ADD ONLY
+
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Doctor Login */}
-        <Route path="/" element={<DoctorLogin />} />
+        <Route path="/login" element={<DoctorLogin />} />
+        {/* Register route yahan add kiya */}
+        <Route path="/register" element={<DoctorRegister />} /> 
 
-        {/* Doctor Register (OTP Page) ✅ ADD */}
-        <Route
-          path="/doctor/register"
-          element={<DoctorRegister />}
-        />
+        <Route path="/" element={<ProtectedRoute><DoctorDashboard /></ProtectedRoute>} />
+        <Route path="/appointments" element={<ProtectedRoute><Appointments /></ProtectedRoute>} />
+        <Route path="/patients" element={<ProtectedRoute><MyPatients /></ProtectedRoute>} />
+        <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><DoctorProfile /></ProtectedRoute>} />
+       
 
-        {/* Doctor Dashboard ✅ VERY IMPORTANT */}
-        <Route
-          path="/doctor/dashboard"
-          element={<DoctorDashboard />}
-        />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

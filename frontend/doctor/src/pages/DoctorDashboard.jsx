@@ -1,247 +1,46 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from 'react';
+import Sidebar from '../components/Sidebar';
+import StatsCards from '../components/StatsCards';
+import AppointmentTable from '../components/AppointmentTable';
 
 const DoctorDashboard = () => {
-  const [appointments, setAppointments] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState(null);
-  const [medicines, setMedicines] = useState([{ name: "", dose: "", days: "" }]);
-  const [notes, setNotes] = useState("");
-
-  /* =====================
-     FETCH APPOINTMENTS
-  ===================== */
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/";
-      return;
-    }
-
-    axios
-      .get("http://localhost:5000/api/appointments/doctor", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => setAppointments(res.data || []));
-  }, []);
-
-  /* =====================
-     ADD MEDICINE ROW
-  ===================== */
-  const addMedicine = () => {
-    setMedicines([...medicines, { name: "", dose: "", days: "" }]);
-  };
-
-  /* =====================
-     HANDLE MEDICINE CHANGE
-  ===================== */
-  const handleMedicineChange = (index, field, value) => {
-    const updated = [...medicines];
-    updated[index][field] = value;
-    setMedicines(updated);
-  };
-
-  /* =====================
-     SUBMIT PRESCRIPTION
-  ===================== */
-  const submitPrescription = async () => {
-    const token = localStorage.getItem("token");
-
-    try {
-      await axios.post(
-        "http://localhost:5000/api/prescriptions",
-        {
-          patientId: selectedPatient.patientId._id,
-          medicines,
-          notes,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      alert("Prescription added successfully ✅");
-      setSelectedPatient(null);
-      setMedicines([{ name: "", dose: "", days: "" }]);
-      setNotes("");
-    } catch {
-      alert("Failed to add prescription ❌");
-    }
-  };
-
   return (
-    <div style={styles.container}>
-      {/* ===== SIDEBAR ===== */}
-      <aside style={styles.sidebar}>
-        <h2>HDMS</h2>
-        <button style={styles.navActive}>Dashboard</button>
-        <button
-          style={styles.logout}
-          onClick={() => {
-            localStorage.removeItem("token");
-            window.location.href = "/";
-          }}
-        >
-          Logout
-        </button>
-      </aside>
+    <div className="flex min-h-screen bg-gray-50"> 
+      
+      {/* Sidebar ab apne aap mobile aur desktop dono layouts handle karega */}
+      <Sidebar /> 
 
-      {/* ===== MAIN ===== */}
-      <main style={styles.main}>
-        <h1>Doctor Dashboard</h1>
+      {/* MAIN CONTENT WRAPPER - Mobile par full width aur margin-top, Desktop par ml-64 */}
+      <main className="flex-1 ml-0 md:ml-64 p-4 md:p-8 pt-24 md:pt-8 w-full md:w-[calc(100%-256px)] overflow-x-hidden transition-all duration-300">
+        
+        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4 bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800 tracking-tight">Doctor Dashboard</h1>
+            <p className="text-gray-500 text-sm mt-1">Welcome back! Here is your schedule for today.</p>
+          </div>
+          
+          <div className="flex items-center gap-2 text-blue-600 font-semibold bg-blue-50 px-4 py-2 rounded-xl shadow-sm border border-blue-100">
+            <span className="text-lg">📅</span>
+            {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+          </div>
+        </header>
 
-        {/* ===== APPOINTMENTS LIST ===== */}
-        <section style={styles.card}>
-          <h3>Today’s Appointments</h3>
-
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th>Patient</th>
-                <th>Problem</th>
-                <th>Time</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointments.map((a) => (
-                <tr key={a._id}>
-                  <td>{a.patientId?.name}</td>
-                  <td>{a.problem}</td>
-                  <td>{a.time}</td>
-                  <td>
-                    <button
-                      style={styles.btn}
-                      onClick={() => setSelectedPatient(a)}
-                    >
-                      Add Prescription
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <section className="mb-8">
+          <StatsCards />
         </section>
-
-        {/* ===== PRESCRIPTION FORM ===== */}
-        {selectedPatient && (
-          <section style={styles.card}>
-            <h3>
-              Prescription for {selectedPatient.patientId?.name}
-            </h3>
-
-            {medicines.map((m, i) => (
-              <div key={i} style={styles.medicineRow}>
-                <input
-                  placeholder="Medicine name"
-                  value={m.name}
-                  onChange={(e) =>
-                    handleMedicineChange(i, "name", e.target.value)
-                  }
-                />
-                <input
-                  placeholder="Dose"
-                  value={m.dose}
-                  onChange={(e) =>
-                    handleMedicineChange(i, "dose", e.target.value)
-                  }
-                />
-                <input
-                  placeholder="Days"
-                  value={m.days}
-                  onChange={(e) =>
-                    handleMedicineChange(i, "days", e.target.value)
-                  }
-                />
-              </div>
-            ))}
-
-            <button style={styles.addBtn} onClick={addMedicine}>
-              + Add Medicine
-            </button>
-
-            <textarea
-              placeholder="Doctor notes"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              style={styles.textarea}
-            />
-
-            <button style={styles.submitBtn} onClick={submitPrescription}>
-              Save Prescription
-            </button>
-          </section>
-        )}
+        
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="p-5 md:p-6 border-b border-gray-50 bg-white">
+            <h2 className="text-xl font-bold text-gray-800">Today's Appointments</h2>
+          </div>
+          <div className="overflow-x-auto w-full">
+            <AppointmentTable />
+          </div>
+        </div>
+        
       </main>
     </div>
   );
 };
 
 export default DoctorDashboard;
-
-/* ================= STYLES ================= */
-
-const styles = {
-  container: { display: "flex", minHeight: "100vh", background: "#f4f6f8" },
-  sidebar: {
-    width: "220px",
-    background: "#0f4c75",
-    color: "#fff",
-    padding: "20px",
-  },
-  navActive: {
-    background: "#3282b8",
-    border: "none",
-    color: "#fff",
-    padding: "10px",
-    width: "100%",
-  },
-  logout: {
-    marginTop: "20px",
-    background: "#e74c3c",
-    border: "none",
-    color: "#fff",
-    padding: "10px",
-    width: "100%",
-  },
-  main: { flex: 1, padding: "25px" },
-  card: {
-    background: "#fff",
-    padding: "20px",
-    borderRadius: "8px",
-    marginBottom: "20px",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-  },
-  btn: {
-    background: "#2ecc71",
-    border: "none",
-    color: "#fff",
-    padding: "6px 10px",
-    cursor: "pointer",
-  },
-  medicineRow: {
-    display: "flex",
-    gap: "10px",
-    marginBottom: "10px",
-  },
-  addBtn: {
-    background: "#3498db",
-    color: "#fff",
-    border: "none",
-    padding: "6px 10px",
-    marginBottom: "10px",
-  },
-  textarea: {
-    width: "100%",
-    height: "80px",
-    marginBottom: "10px",
-  },
-  submitBtn: {
-    background: "#27ae60",
-    color: "#fff",
-    border: "none",
-    padding: "10px",
-  },
-};

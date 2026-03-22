@@ -1,6 +1,7 @@
+const cors = require("cors");
 const express = require("express");
 const dotenv = require("dotenv");
-const cors = require("cors");
+
 const connectDB = require("./config/db");
 
 dotenv.config();
@@ -8,31 +9,43 @@ connectDB();
 
 const app = express();
 
-//  MIDDLEWARES (ORDER MAT BADALNA)
-const appointmentRoutes = require("./routes/appointmentRoutes");
+// 🔥 ADD THIS — Global Middlewares FIRST
+app.use("/uploads", express.static("uploads"));
+app.use(cors());
+app.use(express.json());
 
+// ==========================================
+// 🚦 ALL ROUTES
+// ==========================================
+
+const uploadRoutes = require("./routes/uploadRoutes");
+app.use("/api/upload", uploadRoutes);
+
+const reportRoutes = require("./routes/reportRoutes");
+app.use("/api/reports", reportRoutes);
+
+const appointmentRoutes = require("./routes/appointmentRoutes");
 app.use("/api/appointments", appointmentRoutes);
 
 const prescriptionRoutes = require("./routes/prescriptionRoutes");
 app.use("/api/prescriptions", prescriptionRoutes);
 
-app.use(cors());
-app.use(express.json());
-app.use("/api/prescriptions", require("./routes/prescriptionRoutes"));
-
-
-//  AUTH ROUTES (🔥 MISSING THA – MOST IMPORTANT)
+// 🔐 AUTH ROUTES (🔥 MOST IMPORTANT)
 app.use("/api/auth", require("./routes/authRoutes"));
 
-//  DOCTOR ROUTES
+// 👨‍⚕️ DOCTOR ROUTES
 app.use("/api/doctor", require("./routes/doctorRoutes"));
 
-//otp ke liye
-
+// ✉️ OTP ROUTES
 app.use("/api/otp", require("./routes/otpRoutes"));
 
+// 👑 ADMIN ROUTES
+app.use("/api/admin", require("./routes/adminRoutes"));
 
-//  TEST ROUTE
+// 🏥 PATIENT ROUTES (🔥 NAYA ADD KIYA HAI YAHAN)
+app.use("/api/patient", require("./routes/patientRoutes"));
+
+// 🛠️ TEST ROUTE
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend connected successfully ✅" });
 });

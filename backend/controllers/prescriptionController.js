@@ -6,20 +6,23 @@ const Prescription = require("../models/Prescription");
 ========================= */
 exports.addPrescription = async (req, res) => {
   try {
-    const { patientId, medicines, notes } = req.body;
+    // Frontend se 'disease', 'advice' ya 'notes' kuch bhi aaye, handle ho jayega
+    const { patientId, disease, medicines, notes, advice } = req.body;
 
     if (!patientId || !medicines || medicines.length === 0) {
       return res.status(400).json({ message: "MISSING_FIELDS" });
     }
 
     const prescription = await Prescription.create({
-      doctorId: req.user._id,
+      doctorId: req.user._id || req.user.id, // JWT se doctor ki ID
       patientId,
+      disease: disease || "General Checkup",
       medicines,
-      notes,
+      notes: notes || advice,
+      date: new Date().toLocaleDateString('en-IN')
     });
 
-    res.status(201).json(prescription);
+    res.status(201).json({ success: true, data: prescription });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "ADD_PRESCRIPTION_FAILED" });
@@ -27,14 +30,15 @@ exports.addPrescription = async (req, res) => {
 };
 
 /* =========================
-   PATIENT → VIEW PRESCRIPTIONS
+   PATIENT/DOCTOR → VIEW PRESCRIPTIONS
 ========================= */
 exports.getPatientPrescriptions = async (req, res) => {
   try {
-    const prescriptions = await Prescription.find({
-      patientId: req.user._id,
-    })
-      .populate("doctorId", "name")
+    // URL params se ID aaye (Frontend) ya JWT se aaye, dono chalega
+    const patientId = req.params.patientId || req.params.id || req.user._id || req.user.id;
+
+    const prescriptions = await Prescription.find({ patientId })
+      .populate("doctorId", "name specialization") // Doctor ki details jod dega
       .sort({ createdAt: -1 });
 
     res.json(prescriptions);
@@ -45,7 +49,26 @@ exports.getPatientPrescriptions = async (req, res) => {
 };
 
 /* =========================
-   DOWNLOAD PDF
+   ADMIN → VIEW ALL PRESCRIPTIONS
+   (Naya Function Admin Panel ke liye)
+========================= */
+exports.getAllPrescriptionsAdmin = async (req, res) => {
+  try {
+    // Admin ko sab dikhega, Patient aur Doctor dono ka naam jod kar
+    const prescriptions = await Prescription.find()
+      .populate('patientId', 'name phone email')
+      .populate('doctorId', 'name specialization')
+      .sort({ createdAt: -1 });
+      
+    res.status(200).json(prescriptions);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "SERVER_ERROR" });
+  }
+};
+
+/* =========================
+   DOWNLOAD PDF (Aapka Original Masterpiece)
 ========================= */
 exports.downloadPrescriptionPDF = async (req, res) => {
   try {
@@ -82,9 +105,9 @@ exports.downloadPrescriptionPDF = async (req, res) => {
     doc.moveDown(0.5);
 
     prescription.medicines.forEach((m, i) => {
-      doc.fontSize(12).text(
-        `${i + 1}. ${m.name} - ${m.dose} - ${m.days} days`
-      );
+      // Handle both Object and String formats of medicines array safely
+      let medText = typeof m === 'object' ? `${m.name} - ${m.dose} - ${m.days} days` : m;
+      doc.fontSize(12).text(`${i + 1}. ${medText}`);
     });
 
     doc.moveDown();

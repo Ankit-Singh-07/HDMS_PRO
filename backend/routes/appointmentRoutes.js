@@ -1,73 +1,38 @@
 const express = require("express");
 const router = express.Router();
-const Appointment = require("../models/Appointment");
 
-// 🟢 CREATE APPOINTMENT (Patient booking)
-router.post("/book", async (req, res) => {
-  try {
-    const appointment = new Appointment({
-      ...req.body,
-      status: "Pending",
-      meetingLink: ""
-    });
+// 🔐 Security Middleware
+const auth = require("../middleware/auth"); 
 
-    await appointment.save();
-    res.json(appointment);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+const {
+  bookAppointment,
+  getDoctorAppointments,
+  getAllAppointmentsAdmin,
+  updateAppointmentStatus
+} = require("../controllers/appointmentController");
 
+// ==========================================
+// 🚀 THE PRO ROUTES 
+// ==========================================
 
-// 🟢 PATIENT VIEW APPOINTMENTS
-router.get("/patient/:id", async (req, res) => {
-  const data = await Appointment.find({ patientId: req.params.id });
-  res.json(data);
-});
+// 1. PATIENT → Nayi Appointment Book Karega
+router.post("/book", auth, bookAppointment);
 
+// 2. DOCTOR → Apni Appointments Dekhega
+router.get("/doctor", auth, getDoctorAppointments);
 
-// 🟢 DOCTOR VIEW APPOINTMENTS
-router.get("/doctor/:id", async (req, res) => {
-  const data = await Appointment.find({ doctorId: req.params.id });
-  res.json(data);
-});
+// 3. DOCTOR → Status Update Karega
+router.put("/:id/status", auth, updateAppointmentStatus);
 
+// ==========================================
+// 🔥 FIX: ADMIN ROUTES 🔥
+// (Yahan se 'auth' hata diya kyunki Admin Hardcoded hai)
+// ==========================================
 
-// 🟢 DOCTOR ACCEPT APPOINTMENT + CREATE VIDEO LINK
-router.put("/accept/:id", async (req, res) => {
-  const meetingLink = `https://meet.jit.si/HDMS-${req.params.id}`;
+// 4. ADMIN → Hospital ki saari appointments dekhega
+router.get("/admin", getAllAppointmentsAdmin);
 
-  const updated = await Appointment.findByIdAndUpdate(
-    req.params.id,
-    { status: "Confirmed", meetingLink },
-    { new: true }
-  );
-
-  res.json(updated);
-});
-
-
-// 🔴 DOCTOR REJECT
-router.put("/reject/:id", async (req, res) => {
-  const updated = await Appointment.findByIdAndUpdate(
-    req.params.id,
-    { status: "Rejected" },
-    { new: true }
-  );
-
-  res.json(updated);
-});
-
-
-// 🟢 COMPLETE APPOINTMENT
-router.put("/complete/:id", async (req, res) => {
-  const updated = await Appointment.findByIdAndUpdate(
-    req.params.id,
-    { status: "Completed" },
-    { new: true }
-  );
-
-  res.json(updated);
-});
+// 5. ADMIN → Status Update Karega (Confirm/Cancel)
+router.put("/admin/:id", updateAppointmentStatus);
 
 module.exports = router;
