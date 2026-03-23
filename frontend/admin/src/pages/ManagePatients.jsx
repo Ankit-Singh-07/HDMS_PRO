@@ -27,7 +27,7 @@ const ManagePatients = () => {
   const fetchPatients = async () => {
     try {
       const token = getAuthToken();
-      const res = await axios.get('http://localhost:5000/api/auth/patients-list', {
+      const res = await axios.get('https://hdms-backend-7j7w.onrender.com/api/auth/patients-list', {
         headers: { "Authorization": `Bearer ${token}` }
       });
       // Sort newest first
@@ -48,7 +48,7 @@ const ManagePatients = () => {
     if (window.confirm(`⚠️ DANGER: Are you sure you want to permanently remove patient '${name}'?`)) {
       try {
         const token = getAuthToken();
-        await axios.delete(`http://localhost:5000/api/auth/delete-user/${id}`, {
+        await axios.delete(`https://hdms-backend-7j7w.onrender.com/api/auth/delete-user/${id}`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         alert(`✅ Patient ${name} removed from the system.`);

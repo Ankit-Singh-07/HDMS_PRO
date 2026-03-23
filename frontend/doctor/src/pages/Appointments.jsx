@@ -27,7 +27,7 @@ const Appointments = () => {
       const token = getAuthToken();
       if (!token) return;
 
-      const res = await axios.get('http://localhost:5000/api/appointments/doctor', {
+      const res = await axios.get('https://hdms-backend-7j7w.onrender.com/api/appointments/doctor', {
         headers: { 
           "Authorization": `Bearer ${token}`,
           "x-auth-token": token 
@@ -48,7 +48,7 @@ const Appointments = () => {
   const handleUpdateStatus = async (id, newStatus) => {
     try {
       const token = getAuthToken();
-      await axios.put(`http://localhost:5000/api/appointments/${id}/status`, 
+      await axios.put(`https://hdms-backend-7j7w.onrender.com/api/appointments/${id}/status`, 
         { status: newStatus },
         { headers: { "Authorization": `Bearer ${token}`, "x-auth-token": token } }
       );
@@ -80,7 +80,7 @@ const Appointments = () => {
 
       const medicinesArray = prescriptionData.medicines.split(',').map(med => med.trim());
 
-      await axios.post('http://localhost:5000/api/prescriptions/doctor/add', {
+      await axios.post('https://hdms-backend-7j7w.onrender.com/api/prescriptions/doctor/add', {
         patientId: pId,
         disease: prescriptionData.disease,
         medicines: medicinesArray,

@@ -57,7 +57,7 @@ const DoctorRegister = () => {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/otp/send", {
+      const res = await fetch("https://hdms-backend-7j7w.onrender.com/api/otp/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email }),
@@ -93,7 +93,7 @@ const DoctorRegister = () => {
       setError("");
 
       // ✅ VERIFY OTP
-      const verifyRes = await fetch("http://localhost:5000/api/otp/verify", {
+      const verifyRes = await fetch("https://hdms-backend-7j7w.onrender.com/api/otp/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email, otp: String(otp) }),
@@ -107,7 +107,7 @@ const DoctorRegister = () => {
       }
 
       // ✅ REGISTER DOCTOR
-      const registerRes = await fetch("http://localhost:5000/api/auth/register", {
+      const registerRes = await fetch("https://hdms-backend-7j7w.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

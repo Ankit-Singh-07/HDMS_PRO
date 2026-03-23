@@ -33,7 +33,7 @@ const Profile = () => {
         const ptId = user._id || user.id;
 
         // Dashboard wale route se hi purana data utha lenge
-        const res = await axios.get(`http://localhost:5000/api/patient/dashboard-data/${ptId}`);
+        const res = await axios.get(`https://hdms-backend-7j7w.onrender.com/api/patient/dashboard-data/${ptId}`);
         const data = res.data;
 
         setProfile({
@@ -70,7 +70,7 @@ const Profile = () => {
       const ptId = user._id || user.id;
 
       // Backend API call
-      await axios.put(`http://localhost:5000/api/patient/update-profile/${ptId}`, profile);
+      await axios.put(`https://hdms-backend-7j7w.onrender.com/api/patient/update-profile/${ptId}`, profile);
       
       setIsEditing(false);
       setSaving(false);

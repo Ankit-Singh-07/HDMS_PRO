@@ -35,7 +35,7 @@ const PatientRegister = () => {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:5000/api/otp/send", { email: form.email });
+      await axios.post("https://hdms-backend-7j7w.onrender.com/api/otp/send", { email: form.email });
       setStep("otp");
     } catch {
       setError("Failed to send OTP. Email might be invalid ❌");
@@ -57,13 +57,13 @@ const PatientRegister = () => {
       setLoading(true);
 
       // 1️⃣ verify OTP
-      await axios.post("http://localhost:5000/api/otp/verify", {
+      await axios.post("https://hdms-backend-7j7w.onrender.com/api/otp/verify", {
         email: form.email,
         otp,
       });
 
       // 2️⃣ register patient
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post("https://hdms-backend-7j7w.onrender.com/api/auth/register", {
         name: form.name,
         email: form.email,
         password: form.password,

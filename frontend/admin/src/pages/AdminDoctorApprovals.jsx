@@ -22,7 +22,7 @@ const AdminDoctorApprovals = () => {
       const token = getAuthToken();
       if (!token) return;
 
-      const res = await axios.get('http://localhost:5000/api/auth/admin/pending-doctors', {
+      const res = await axios.get('https://hdms-backend-7j7w.onrender.com/api/auth/admin/pending-doctors', {
         headers: { "Authorization": `Bearer ${token}`, "x-auth-token": token }
       });
       setPendingDoctors(res.data);
@@ -42,7 +42,7 @@ const AdminDoctorApprovals = () => {
       const token = getAuthToken();
       if (!token) return;
 
-      await axios.put(`http://localhost:5000/api/auth/admin/approve-doctor/${doctorId}`, {}, {
+      await axios.put(`https://hdms-backend-7j7w.onrender.com/api/auth/admin/approve-doctor/${doctorId}`, {}, {
         headers: { "Authorization": `Bearer ${token}`, "x-auth-token": token }
       });
       

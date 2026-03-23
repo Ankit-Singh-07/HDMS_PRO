@@ -25,7 +25,7 @@ const Appointments = () => {
   const fetchAppointments = async () => {
     try {
       const token = getAuthToken();
-      const res = await axios.get('http://localhost:5000/api/appointments/admin', {
+      const res = await axios.get('https://hdms-backend-7j7w.onrender.com/api/appointments/admin', {
         headers: { 
           "Authorization": `Bearer ${token}`,
           "x-auth-token": token 
@@ -48,7 +48,7 @@ const Appointments = () => {
     if (window.confirm(confirmMsg)) {
       try {
         const token = getAuthToken();
-        await axios.put(`http://localhost:5000/api/appointments/admin/${id}`, 
+        await axios.put(`https://hdms-backend-7j7w.onrender.com/api/appointments/admin/${id}`, 
           { status: newStatus },
           { 
             headers: { 

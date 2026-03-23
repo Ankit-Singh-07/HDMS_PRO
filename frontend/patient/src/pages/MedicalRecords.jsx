@@ -43,14 +43,14 @@ const MedicalRecords = () => {
         };
 
         try {
-          const prescriptionRes = await axios.get(`http://localhost:5000/api/prescriptions/patient/${ptId}`, { headers: apiHeaders });
+          const prescriptionRes = await axios.get(`https://hdms-backend-7j7w.onrender.com/api/prescriptions/patient/${ptId}`, { headers: apiHeaders });
           setPrescriptions(prescriptionRes.data);
         } catch (err) {
           console.error("Prescriptions Error:", err);
         }
 
         try {
-          const reportRes = await axios.get(`http://localhost:5000/api/reports/patient/${ptId}`, { headers: apiHeaders });
+          const reportRes = await axios.get(`https://hdms-backend-7j7w.onrender.com/api/reports/patient/${ptId}`, { headers: apiHeaders });
           setReports(reportRes.data);
         } catch (err) {}
 
@@ -63,7 +63,7 @@ const MedicalRecords = () => {
   }, [navigate]);
 
   const handleDownloadPrescription = (id) => {
-    window.open(`http://localhost:5000/api/prescriptions/download/${id}`, '_blank');
+    window.open(`https://hdms-backend-7j7w.onrender.com/api/prescriptions/download/${id}`, '_blank');
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-teal-600 font-bold">Loading records... ⏳</div>;

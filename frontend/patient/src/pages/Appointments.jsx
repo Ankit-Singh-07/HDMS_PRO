@@ -10,7 +10,7 @@ const Appointments = () => {
   // 🔹 Fetch data
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/appointments")
+      .get("https://hdms-backend-7j7w.onrender.com/api/appointments")
       .then((res) => setAppointments(res.data))
       .catch(() => alert("Failed to load appointments"));
   }, []);
@@ -18,7 +18,7 @@ const Appointments = () => {
   // 🔹 Cancel appointment
   const handleCancel = async (id) => {
     await axios.delete(
-      `http://localhost:5000/api/appointments/${id}`
+      `https://hdms-backend-7j7w.onrender.com/api/appointments/${id}`
     );
 
     setAppointments((prev) =>

@@ -9,7 +9,7 @@ const Prescriptions = () => {
   // 🔹 Fetch prescriptions
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/prescriptions")
+      .get("https://hdms-backend-7j7w.onrender.com/api/prescriptions")
       .then((res) => setData(res.data))
       .catch(() => console.log("Error"));
   }, []);
@@ -72,7 +72,7 @@ const Prescriptions = () => {
 
               {/* ⭐ Download */}
               <a
-                href={`http://localhost:5000/uploads/${p.fileUrl}`}
+                href={`https://hdms-backend-7j7w.onrender.com/uploads/${p.fileUrl}`}
                 target="_blank"
                 rel="noreferrer"
               >

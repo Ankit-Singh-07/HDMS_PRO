@@ -8,7 +8,7 @@ const PatientPrescriptions = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:5000/api/prescriptions/patient", {
+      .get("https://hdms-backend-7j7w.onrender.com/api/prescriptions/patient", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setPrescriptions(res.data));

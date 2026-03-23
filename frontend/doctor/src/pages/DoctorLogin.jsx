@@ -14,7 +14,7 @@ const DoctorLogin = () => {
     e.preventDefault();
     setMessage("");
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("https://hdms-backend-7j7w.onrender.com/api/auth/login", {
         email,
         password,
       });
@@ -38,7 +38,7 @@ const DoctorLogin = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      const res = await axios.post("http://localhost:5000/api/auth/social-login", {
+      const res = await axios.post("https://hdms-backend-7j7w.onrender.com/api/auth/social-login", {
         name: user.displayName,
         email: user.email,
         role: "doctor",
@@ -59,7 +59,7 @@ const DoctorLogin = () => {
     try {
       const result = await signInWithPopup(auth, facebookProvider);
       const user = result.user;
-      const res = await axios.post("http://localhost:5000/api/auth/social-login", {
+      const res = await axios.post("https://hdms-backend-7j7w.onrender.com/api/auth/social-login", {
         name: user.displayName,
         email: user.email,
         role: "doctor",

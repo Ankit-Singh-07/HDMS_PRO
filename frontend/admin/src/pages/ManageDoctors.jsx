@@ -12,7 +12,7 @@ const ManageDoctors = () => {
   const fetchDoctors = async () => {
     try {
       const token = getAuthToken();
-      const res = await axios.get('http://localhost:5000/api/auth/doctors-list', {
+      const res = await axios.get('https://hdms-backend-7j7w.onrender.com/api/auth/doctors-list', {
         headers: { "Authorization": `Bearer ${token}` }
       });
       setDoctors(res.data);
@@ -32,7 +32,7 @@ const ManageDoctors = () => {
     if (window.confirm(`Are you sure you want to permanently delete Dr. ${name}?`)) {
       try {
         const token = getAuthToken();
-        await axios.delete(`http://localhost:5000/api/auth/delete-user/${id}`, {
+        await axios.delete(`https://hdms-backend-7j7w.onrender.com/api/auth/delete-user/${id}`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         alert(`✅ Dr. ${name} has been deleted.`);

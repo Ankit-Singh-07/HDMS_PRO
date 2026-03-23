@@ -9,7 +9,7 @@ const DoctorPrescription = ({ appointmentId }) => {
     const token = localStorage.getItem("token");
 
     axios.post(
-      "http://localhost:5000/api/prescriptions/doctor/add",
+      "https://hdms-backend-7j7w.onrender.com/api/prescriptions/doctor/add",
       { appointmentId, medicines, notes },
       {
         headers: { Authorization: `Bearer ${token}` },

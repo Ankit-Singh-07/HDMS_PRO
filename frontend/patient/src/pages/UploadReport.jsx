@@ -9,7 +9,7 @@ const UploadReport = () => {
     formData.append("report", file);
 
     await axios.post(
-      "http://localhost:5000/api/upload",
+      "https://hdms-backend-7j7w.onrender.com/api/upload",
       formData
     );
 

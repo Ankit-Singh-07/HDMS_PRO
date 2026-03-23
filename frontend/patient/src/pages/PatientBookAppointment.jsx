@@ -19,7 +19,7 @@ const PatientBookAppointment = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/auth/doctors-list");
+        const res = await axios.get("https://hdms-backend-7j7w.onrender.com/api/auth/doctors-list");
         setDoctors(res.data);
       } catch (err) {
         console.error("Failed to fetch doctors", err);
@@ -59,7 +59,7 @@ const PatientBookAppointment = () => {
       const user = JSON.parse(userStr);
 
       // 🚀 Backend ko ab customized Name aur Problem bhej rahe hain
-      await axios.post("http://localhost:5000/api/appointments/book", {
+      await axios.post("https://hdms-backend-7j7w.onrender.com/api/appointments/book", {
         patientId: user._id || user.id, // Account ID wahi rahegi
         customPatientName: patientName, // Yahan Naya naam bhej rahe hain
         doctorId: selectedDoctor,

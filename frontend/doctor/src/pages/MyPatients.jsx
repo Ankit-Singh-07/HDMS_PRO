@@ -31,7 +31,7 @@ const MyPatients = () => {
         const token = getAuthToken();
         if (!token) return;
 
-        const res = await axios.get('http://localhost:5000/api/appointments/doctor', {
+        const res = await axios.get('https://hdms-backend-7j7w.onrender.com/api/appointments/doctor', {
           headers: { "Authorization": `Bearer ${token}`, "x-auth-token": token }
         });
 
@@ -99,8 +99,8 @@ const MyPatients = () => {
       const apiHeaders = { "Authorization": `Bearer ${token}`, "x-auth-token": token };
 
       const [prescriptionRes, reportRes] = await Promise.allSettled([
-        axios.get(`http://localhost:5000/api/prescriptions/patient/${patient.rawId}`, { headers: apiHeaders }),
-        axios.get(`http://localhost:5000/api/reports/patient/${patient.rawId}`, { headers: apiHeaders })
+        axios.get(`https://hdms-backend-7j7w.onrender.com/api/prescriptions/patient/${patient.rawId}`, { headers: apiHeaders }),
+        axios.get(`https://hdms-backend-7j7w.onrender.com/api/reports/patient/${patient.rawId}`, { headers: apiHeaders })
       ]);
 
       setPatientRecords({

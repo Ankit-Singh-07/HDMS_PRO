@@ -31,24 +31,23 @@ const AdminDashboard = () => {
         const token = getAuthToken();
         const headers = { "Authorization": `Bearer ${token}`, "x-auth-token": token };
 
-        // 🚀 Hum multiple APIs ek sath call karenge dashboard ke liye
+        // 🚀 URL UPDATED: Yahan Render ka Live URL laga diya hai
         const [doctorsRes, appointmentsRes] = await Promise.allSettled([
-          axios.get('http://localhost:5000/api/auth/doctors-list', { headers }),
-          // Agar aapka appointments ka route alag hai, toh ise update kar lein. Default route guess kiya hai:
-          axios.get('http://localhost:5000/api/appointments/admin', { headers }).catch(() => ({ data: [] })) 
+          axios.get('https://hdms-backend-7j7w.onrender.com/api/auth/doctors-list', { headers }),
+          axios.get('https://hdms-backend-7j7w.onrender.com/api/appointments/admin', { headers }).catch(() => ({ data: [] })) 
         ]);
 
         const doctorsCount = doctorsRes.status === 'fulfilled' ? doctorsRes.value.data.length : 0;
         const allAppointments = appointmentsRes.status === 'fulfilled' ? appointmentsRes.value.data : [];
 
-        // Simple calculation for UI demo (Aap isko apne actual patients data se replace kar sakte hain)
+        // Simple calculation for UI demo
         const patientsCount = new Set(allAppointments.map(a => a.patientId?._id)).size || 0; 
         const todayApts = allAppointments.filter(a => a.date === new Date().toISOString().split('T')[0]).length || allAppointments.length;
         const totalRevenue = allAppointments.length * 500; // Asuming ₹500 per appointment
 
         setStats({
           totalDoctors: doctorsCount,
-          totalPatients: patientsCount > 0 ? patientsCount : 5, // Fallback for demo
+          totalPatients: patientsCount > 0 ? patientsCount : 5, 
           appointmentsToday: todayApts,
           revenue: totalRevenue || 1500
         });
@@ -125,7 +124,10 @@ const AdminDashboard = () => {
                 {recentAppointments.length > 0 ? recentAppointments.map((apt, i) => (
                   <tr key={i} className="hover:bg-slate-50 transition-colors">
                     <td className="p-4 pl-6 font-bold text-indigo-600 text-sm">#{apt._id ? apt._id.substring(apt._id.length - 6).toUpperCase() : '69BF9D46'}</td>
-                    <td className="p-4 font-bold text-slate-800 text-sm">{apt.patientId?.name || apt.customPatientName || "Ankit Singh"}</td>
+                    
+                    {/* 🚀 FIX: Yahan Custom Name lagaya hai taaki form wala naam dikhe */}
+                    <td className="p-4 font-bold text-slate-800 text-sm">{apt.customPatientName || apt.patientId?.name || "Unknown"}</td>
+                    
                     <td className="p-4 text-slate-600 text-sm flex items-center gap-2">👨‍⚕️ {apt.doctorId?.name || "Dr. Sharma"}</td>
                     <td className="p-4 text-slate-500 text-sm font-medium">{apt.date || "Today"}</td>
                     <td className="p-4 text-center">
@@ -139,7 +141,7 @@ const AdminDashboard = () => {
                   [1, 2].map((_, i) => (
                     <tr key={i} className="hover:bg-slate-50 transition-colors">
                       <td className="p-4 pl-6 font-bold text-indigo-600 text-sm">#DEMO{i+1}X</td>
-                      <td className="p-4 font-bold text-slate-800 text-sm">Ankit Singh</td>
+                      <td className="p-4 font-bold text-slate-800 text-sm">Waiting...</td>
                       <td className="p-4 text-slate-600 text-sm flex items-center gap-2">👨‍⚕️ System Test</td>
                       <td className="p-4 text-slate-500 text-sm font-medium">Just Now</td>
                       <td className="p-4 text-center">

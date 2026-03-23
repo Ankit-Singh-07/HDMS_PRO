@@ -30,7 +30,7 @@ const PatientDashboard = () => {
             return;
         }
 
-        const res = await axios.get(`http://localhost:5000/api/patient/dashboard-data/${ptId}`);
+        const res = await axios.get(`https://hdms-backend-7j7w.onrender.com/api/patient/dashboard-data/${ptId}`);
         setDashboardData(res.data);
         setLoading(false);
 
